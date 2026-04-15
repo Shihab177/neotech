@@ -8,6 +8,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { Title } from "./ui/text";
 import PriceView from "./PriceView";
 import AddToCartButton from "./AddToCartButton";
+import { Any } from "next-sanity";
 
 const ProductCart = ({ product }: { product: Product }) => {
   return (
@@ -20,15 +21,18 @@ bg-white group"
     bg-shop_light_bg"
       >
         {product?.images && (
-          <Image
-            src={urlFor(product?.images[0]).url()}
-            alt="ProductImage"
-            loading="lazy"
-            width={700}
-            height={700}
-            className={`w-full h-64  object-contain overflow-hidden transition-transform bg-shop_light_bg hoverEffect ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
-          />
+          <Link href={`/product/${product.slug?.current}`}>
+            <Image
+              src={urlFor(product?.images[0]).url()}
+              alt="ProductImage"
+              loading="lazy"
+              width={700}
+              height={700}
+              className={`w-full h-64  object-contain overflow-hidden transition-transform bg-shop_light_bg hoverEffect ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
+            />
+          </Link>
         )}
+        <AddToWishlistButton product={product} />
         {product?.status === "new" && (
           <p className="absolute top-2 left-2 z-10 text-xs border border-darkColor/50 px-2 rounded-full group-hover:border-shop_light_green group-hover:text-shop_light_green hoverEffect">
             New!
@@ -39,7 +43,7 @@ bg-white group"
             sale
           </p>
         )}
-        <AddToWishlistButton product={product} />
+
         {product?.status === "hot" && (
           <Link
             href={"/deal"}
@@ -56,7 +60,7 @@ bg-white group"
       <div className="p-3 flex flex-col gap-2">
         {product?.categories && (
           <p className="uppercase line-clamp-1 text-xs text-shop_light_text">
-            {product.categories.map((cat) => cat).join(", ")}
+            {product.categories.map((cat: Any) => cat.title).join(", ")}
           </p>
         )}
         <Title className="text-sm line-clamp-1">{product.name}</Title>
@@ -90,7 +94,7 @@ bg-white group"
           discount={product?.discount}
           className="text-sm"
         />
-        <AddToCartButton product={product}/>
+        <AddToCartButton product={product} />
       </div>
     </div>
   );

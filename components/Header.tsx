@@ -12,7 +12,7 @@ import { ClerkLoaded, SignIn, UserButton } from "@clerk/nextjs";
 
 export default async function Headerc() {
   const user = await currentUser();
-  console.log(user);
+ 
   return (
     <header className="bg-white/70 py-5 sticky top-0 z-50 backdrop-blur-md">
       <Container className="flex items-center justify-between text-lightColor">
